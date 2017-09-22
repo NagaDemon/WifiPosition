@@ -83,7 +83,7 @@ public class ScanWifiInfoFragment extends Fragment implements ScanWifiInfoAdapte
     }
 
     private void setEvents() {
-        getView().findViewById(R.id.btn_reload).setOnClickListener(this);
+//        getView().findViewById(R.id.btn_reload).setOnClickListener(this);
     }
 
     @Override
@@ -183,6 +183,10 @@ public class ScanWifiInfoFragment extends Fragment implements ScanWifiInfoAdapte
 
     @Override
     public void onClick(View v) {
+
+    }
+
+    public void reload(){
         isClear = true;
         progress.setVisibility(View.VISIBLE);
     }
