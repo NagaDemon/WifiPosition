@@ -9,7 +9,7 @@ import com.uet.wifiposition.remote.model.BaseResponse;
 
 public class GetLocationResponse extends BaseResponse {
     @SerializedName("data")
-    private LocationModel locationModel = new LoionModel();
+    private LocationModel locationModel = new LocationModel();
 
     public LocationModel getLocationModel() {
         return locationModel;
