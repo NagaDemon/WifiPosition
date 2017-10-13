@@ -3,4 +3,5 @@
     <dimen name="padding_arrow_back">16dp</dimen>
     <dimen name="text_size_title">16sp</dimen>
     <dimen name="margin_left_title_toolbar">12dp</dimen>
+    <dimen name="margin_left_right_normal">16dp</dimen>
 </resources>

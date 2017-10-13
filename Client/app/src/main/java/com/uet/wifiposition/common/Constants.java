@@ -8,5 +8,5 @@ public interface Constants {
     int DURATION_ANIMATION = 400;
 
     boolean DEBUG = true;
-    String BASE_API_URL = "http://192.168.100.6:1900/api/mobile/";
+    String BASE_API_URL = "http://192.168.100.3:1900/api/mobile/";
 }

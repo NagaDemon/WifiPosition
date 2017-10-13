@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.uet.wifiposition.ui.main.ScanAndUpdateActivity">
+        </activity>
+        <activity android:name="com.uet.wifiposition.ui.start.StartActivity"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

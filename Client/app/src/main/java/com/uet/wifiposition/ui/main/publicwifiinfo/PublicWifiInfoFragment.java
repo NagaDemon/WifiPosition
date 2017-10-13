@@ -191,6 +191,20 @@ public class PublicWifiInfoFragment extends BaseMvpFragment<PublicWifiInfoContac
         }
     }
 
+    public int getBuildingId() {
+        if (buildingModels == null || buildingModels.size() == 0) {
+            return -1;
+        }
+        return buildingModels.get((int) spBuilding.getTag()).getBuildingId();
+    }
+
+    public int getRoomId() {
+        if (roomModels == null || roomModels.size() == 0) {
+            return -1;
+        }
+      return roomModels.get((int) spRoom.getTag()).getRoomId();
+    }
+
     public interface IPublicWifiInfo {
         List<WifiInfoModel> getListWifiInfoChoose();
     }

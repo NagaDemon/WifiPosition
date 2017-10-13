@@ -90,7 +90,7 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         super.onResume();
         wifiManager.setWifiEnabled(true);
         mDisposeScan = Observable.just("scan")
-                .repeatWhen(delay -> delay.delay(15, TimeUnit.SECONDS))
+                .repeatWhen(delay -> delay.delay(5, TimeUnit.SECONDS))
                 .subscribe(response -> {
                     wifiManager.startScan();
                 });

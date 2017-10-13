@@ -31,7 +31,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="EditTextNomalTheme" parent="AppTheme">
+    <style name="EditTextNormalTheme" parent="AppTheme">
 
         <item name="colorAccent">@color/white</item>
         <item name="colorControlActivated">@color/white</item>
@@ -45,6 +45,5 @@
         <item name="colorControlHighlight">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
     </style>
-
-    <color name="text_hint_white">#808080</color>
+    <color name="text_hint_white">#FFFFFF</color>
 </resources>

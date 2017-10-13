@@ -3,6 +3,7 @@ package com.uet.wifiposition.remote.interact.resource;
 import com.uet.wifiposition.remote.model.getbuilding.GetBuildingsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.GetRoomsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.PostReferencePoint;
+import com.uet.wifiposition.remote.model.getposition.GetLocationResponse;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -24,4 +25,7 @@ public interface Rest {
 
     @POST("info/postReferencePoint")
     Observable<PostReferencePoint> postReferencePoint(@Body RequestBody requestBody);
+
+    @POST("location/getLocation")
+    Observable<GetLocationResponse> getLocation(@Body RequestBody requestBody);
 }
