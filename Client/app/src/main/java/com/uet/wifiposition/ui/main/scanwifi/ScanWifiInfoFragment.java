@@ -23,6 +23,7 @@ import com.uet.wifiposition.ui.base.BaseFragment;
 import com.uet.wifiposition.ui.main.publicwifiinfo.PublicWifiInfoFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -90,7 +91,7 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         super.onResume();
         wifiManager.setWifiEnabled(true);
         mDisposeScan = Observable.just("scan")
-                .repeatWhen(delay -> delay.delay(5, TimeUnit.SECONDS))
+                .repeatWhen(delay -> delay.delay(500, TimeUnit.MILLISECONDS))
                 .subscribe(response -> {
                     wifiManager.startScan();
                 });
@@ -118,6 +119,7 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         return mWifiInfoModels.get(position);
     }
 
+
     private class ScanBroadCast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -125,9 +127,44 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         }
     }
 
+    private List<WifiInfoModel> wifiInfoModels = new ArrayList<>();
+    long currentTime = 0;
     private void getScanWifi() {
         Observable.create((ObservableOnSubscribe<List<WifiInfoModel>>) emitter -> {
             List<ScanResult> scanResults = wifiManager.getScanResults();
+
+            //debug
+            List<WifiInfoModel> currents = new ArrayList<>();
+            Date date = new Date();
+            Log.d(TAG, "getScanWifi time: " + (date.getTime()-currentTime));
+            currentTime = date.getTime();
+
+
+            for (ScanResult scanResult : scanResults) {
+                WifiInfoModel model = new WifiInfoModel();
+                model.setCount(1);
+                model.setLevel(scanResult.level);
+                model.setFrequency(scanResult.frequency);
+                model.setMacAddress(scanResult.BSSID);
+                model.setName(scanResult.SSID);
+                currents.add(model);
+            }
+            if (wifiInfoModels.size() == 0) {
+                wifiInfoModels = currents;
+            } else {
+                for (WifiInfoModel wifiInfoModel : wifiInfoModels) {
+                    for (WifiInfoModel current : currents) {
+                        if (wifiInfoModel.getMacAddress().equals(current.getMacAddress())) {
+                            Log.d(TAG, "getScanWifi name: " + current.getName() + " , detal: " + (wifiInfoModel.getLevel() - current.getLevel()));
+                            break;
+                        }
+                    }
+                }
+                wifiInfoModels = currents;
+                Log.d(TAG, "---------------------------------");
+            }
+            //end debug
+
             if (scanResults != null) {
                 if (isClear) {
                     mWifiInfoModels.clear();
@@ -146,7 +183,8 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
                         boolean isSame = false;
                         for (WifiInfoModel wifiInfoModel : mWifiInfoModels) {
                             if (wifiInfoModel.getMacAddress().equals(scanResult.BSSID)) {
-                                wifiInfoModel.setLevel(wifiInfoModel.getLevel() * 0.9f + scanResult.level * .01f);
+                                wifiInfoModel.setLevel(wifiInfoModel.getLevel() * wifiInfoModel.getCount() / (wifiInfoModel.getCount() + 1) +
+                                        scanResult.level * 1.0f / (wifiInfoModel.getCount() + 1));
                                 wifiInfoModel.setCount(wifiInfoModel.getCount() + 1);
                                 isSame = true;
                                 break;
@@ -209,5 +247,15 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
             }
         }
         return wifiInfoModels;
+    }
+
+    public void chooseAll() {
+        if (mWifiInfoModels != null) {
+            for (WifiInfoModel wifi : mWifiInfoModels) {
+                wifi.setCheck(true);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
     }
 }

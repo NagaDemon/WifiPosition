@@ -205,6 +205,8 @@ public class PublicWifiInfoFragment extends BaseMvpFragment<PublicWifiInfoContac
       return roomModels.get((int) spRoom.getTag()).getRoomId();
     }
 
+
+
     public interface IPublicWifiInfo {
         List<WifiInfoModel> getListWifiInfoChoose();
     }

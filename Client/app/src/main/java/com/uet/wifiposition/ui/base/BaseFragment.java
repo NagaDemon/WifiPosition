@@ -229,4 +229,5 @@ public abstract class BaseFragment extends Fragment implements ViewFragment {
 
         return null;
     }
+
 }

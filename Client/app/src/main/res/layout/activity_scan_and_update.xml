@@ -49,6 +49,16 @@
                 android:scaleType="centerInside"
                 android:src="@mipmap/ic_launcher"
                 android:tint="@color/white" />
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_choose_all"
+                android:layout_toLeftOf="@+id/btn_location"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:background="@drawable/bg_transparent_select"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_network_wifi_black_48dp"
+                android:tint="@color/white" />
 
 
         </RelativeLayout>

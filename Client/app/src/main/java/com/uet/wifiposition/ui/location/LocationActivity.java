@@ -1,5 +1,6 @@
 package com.uet.wifiposition.ui.location;
 
+import com.uet.wifiposition.R;
 import com.uet.wifiposition.ui.base.BaseActivity;
 
 /**
@@ -9,7 +10,7 @@ import com.uet.wifiposition.ui.base.BaseActivity;
 public class LocationActivity extends BaseActivity {
     @Override
     public int getLayoutMain() {
-        return 0;
+        return R.layout.activity_location;
     }
 
     @Override

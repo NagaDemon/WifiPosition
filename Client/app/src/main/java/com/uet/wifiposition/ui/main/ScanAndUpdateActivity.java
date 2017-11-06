@@ -1,10 +1,12 @@
 package com.uet.wifiposition.ui.main;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.uet.wifiposition.R;
 import com.uet.wifiposition.remote.interact.main.Interactor;
@@ -46,6 +48,7 @@ public class ScanAndUpdateActivity extends BaseMvpActivity<ScanAndUpdateContract
         btnReload.setOnClickListener(this);
 
         findViewById(R.id.btn_location).setOnClickListener(this);
+        findViewById(R.id.btn_choose_all).setOnClickListener(this);
     }
 
     @Override
@@ -60,6 +63,7 @@ public class ScanAndUpdateActivity extends BaseMvpActivity<ScanAndUpdateContract
         presenter = new ScanAndUpdatePresenter(this);
 
 
+
     }
 
     @Override
@@ -69,6 +73,11 @@ public class ScanAndUpdateActivity extends BaseMvpActivity<ScanAndUpdateContract
 
     @Override
     public void onPageSelected(int position) {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
         if (position == 0) {
             btnReload.show();
         } else {
@@ -106,7 +115,11 @@ public class ScanAndUpdateActivity extends BaseMvpActivity<ScanAndUpdateContract
                 for (WifiInfoModel wifiInfoModel : wifiInfoModels) {
                     infoReferencePointInputs.add(new InfoReferencePointInput(wifiInfoModel.getMacAddress(), wifiInfoModel.getName(), wifiInfoModel.getLevel()));
                 }
-                presenter.getLocation(buildingId, roomId,infoReferencePointInputs );
+                presenter.getLocation(buildingId, roomId, infoReferencePointInputs);
+                break;
+            case R.id.btn_choose_all:
+                ScanWifiInfoFragment scanWifiInfoFragment = (ScanWifiInfoFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.vp_position + ":" + 0);
+                scanWifiInfoFragment.chooseAll();
                 break;
             default:
                 break;

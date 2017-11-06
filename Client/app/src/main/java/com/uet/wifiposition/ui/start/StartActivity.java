@@ -100,7 +100,7 @@ public class StartActivity extends BaseActivity {
     public void setEvents() {
         btnLogin.setOnClickListener(view -> {
             String ipAddress = edtIpAddress.getText().toString().trim();
-            Interactor.setUrl("http://" + ipAddress + ":1900/api/mobile/");
+            Interactor.setUrl(ipAddress + "/");
             Intent intent = new Intent();
             intent.setClass(StartActivity.this, ScanAndUpdateActivity.class);
             startActivity(intent);

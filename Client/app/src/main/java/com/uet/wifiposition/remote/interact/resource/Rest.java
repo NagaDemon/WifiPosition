@@ -17,15 +17,15 @@ import retrofit2.http.Query;
  */
 
 public interface Rest {
-    @GET("info/getBuildings")
+    @GET("api/mobile/info/getBuildings")
     Observable<GetBuildingsResponse> getBuildings();
 
-    @GET("info/getRooms")
+    @GET("api/mobile/info/getRooms")
     Observable<GetRoomsResponse> getRooms(@Query("buildingId") int buildingId);
 
-    @POST("info/postReferencePoint")
+    @POST("api/mobile/info/postReferencePoint")
     Observable<PostReferencePoint> postReferencePoint(@Body RequestBody requestBody);
 
-    @POST("location/getLocation")
+    @POST("api/mobile/location/getLocation")
     Observable<GetLocationResponse> getLocation(@Body RequestBody requestBody);
 }
