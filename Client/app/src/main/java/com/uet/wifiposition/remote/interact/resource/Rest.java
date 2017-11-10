@@ -26,6 +26,11 @@ public interface Rest {
     @POST("api/mobile/info/postReferencePoint")
     Observable<PostReferencePoint> postReferencePoint(@Body RequestBody requestBody);
 
+    @POST("api/mobile/info/postReferencePointGauss")
+    Observable<PostReferencePoint> postReferencePointGauss(@Body RequestBody requestBodyD);
+
     @POST("api/mobile/location/getLocation")
     Observable<GetLocationResponse> getLocation(@Body RequestBody requestBody);
+
+
 }

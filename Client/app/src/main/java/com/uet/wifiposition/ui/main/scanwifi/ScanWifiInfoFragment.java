@@ -46,6 +46,7 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
     private WifiManager wifiManager;
     private Disposable mDisposeScan;
     private boolean isClear;
+    private boolean isNotification;
 
     @Override
     public int getLayoutMain() {
@@ -65,6 +66,14 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         mAdapter = new ScanWifiInfoAdapter(this);
         rcWifi.setAdapter(mAdapter);
         initBroadcast();
+
+        wifiManager.setWifiEnabled(true);
+        mDisposeScan = Observable.just("scan")
+                .repeatWhen(delay -> delay.delay(500, TimeUnit.MILLISECONDS))
+                .subscribe(response -> {
+                    wifiManager.startScan();
+                });
+
     }
 
     @Override
@@ -89,21 +98,33 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
     @Override
     public void onResume() {
         super.onResume();
-        wifiManager.setWifiEnabled(true);
-        mDisposeScan = Observable.just("scan")
-                .repeatWhen(delay -> delay.delay(500, TimeUnit.MILLISECONDS))
-                .subscribe(response -> {
-                    wifiManager.startScan();
-                });
-
-
+        if (!isHidden()) {
+            if (isNotification) {
+                hideProgress();
+                mAdapter.notifyDataSetChanged();
+                isNotification = false;
+            }
+        }
     }
 
     @Override
-    public void onPause() {
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (isNotification) {
+                hideProgress();
+                mAdapter.notifyDataSetChanged();
+                isNotification = false;
+            }
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
         mDisposeScan.dispose();
         wifiManager.setWifiEnabled(false);
-        super.onPause();
+        super.onDestroy();
     }
 
     @Override
@@ -129,43 +150,44 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
 
     private List<WifiInfoModel> wifiInfoModels = new ArrayList<>();
     long currentTime = 0;
+
     private void getScanWifi() {
         Observable.create((ObservableOnSubscribe<List<WifiInfoModel>>) emitter -> {
             List<ScanResult> scanResults = wifiManager.getScanResults();
 
-            //debug
-            List<WifiInfoModel> currents = new ArrayList<>();
-            Date date = new Date();
-            Log.d(TAG, "getScanWifi time: " + (date.getTime()-currentTime));
-            currentTime = date.getTime();
-
-
-            for (ScanResult scanResult : scanResults) {
-                WifiInfoModel model = new WifiInfoModel();
-                model.setCount(1);
-                model.setLevel(scanResult.level);
-                model.setFrequency(scanResult.frequency);
-                model.setMacAddress(scanResult.BSSID);
-                model.setName(scanResult.SSID);
-                currents.add(model);
-            }
-            if (wifiInfoModels.size() == 0) {
-                wifiInfoModels = currents;
-            } else {
-                for (WifiInfoModel wifiInfoModel : wifiInfoModels) {
-                    for (WifiInfoModel current : currents) {
-                        if (wifiInfoModel.getMacAddress().equals(current.getMacAddress())) {
-                            Log.d(TAG, "getScanWifi name: " + current.getName() + " , detal: " + (wifiInfoModel.getLevel() - current.getLevel()));
-                            break;
-                        }
-                    }
-                }
-                wifiInfoModels = currents;
-                Log.d(TAG, "---------------------------------");
-            }
-            //end debug
+//            //debug
+//            List<WifiInfoModel> currents = new ArrayList<>();
+//            Date date = new Date();
+//            currentTime = date.getTime();
+//
+//
+//            for (ScanResult scanResult : scanResults) {
+//                WifiInfoModel model = new WifiInfoModel();
+//                model.setCount(1);
+//                model.setLevel(scanResult.level);
+//                model.setFrequency(scanResult.frequency);
+//                model.setMacAddress(scanResult.BSSID);
+//                model.setName(scanResult.SSID);
+//                currents.add(model);
+//            }
+//            if (wifiInfoModels.size() == 0) {
+//                wifiInfoModels = currents;
+//            } else {
+//                for (WifiInfoModel wifiInfoModel : wifiInfoModels) {
+//                    for (WifiInfoModel current : currents) {
+//                        if (wifiInfoModel.getMacAddress().equals(current.getMacAddress())) {
+//                            Log.d(TAG, "getScanWifi name: " + current.getName() + " , detal: " + (wifiInfoModel.getLevel() - current.getLevel()));
+//                            break;
+//                        }
+//                    }
+//                }
+//                wifiInfoModels = currents;
+//                Log.d(TAG, "---------------------------------");
+//            }
+//            //end debug
 
             if (scanResults != null) {
+                Log.d(TAG, "getScanWifi scanResults size: " + scanResults.size());
                 if (isClear) {
                     mWifiInfoModels.clear();
                 }
@@ -186,6 +208,7 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
                                 wifiInfoModel.setLevel(wifiInfoModel.getLevel() * wifiInfoModel.getCount() / (wifiInfoModel.getCount() + 1) +
                                         scanResult.level * 1.0f / (wifiInfoModel.getCount() + 1));
                                 wifiInfoModel.setCount(wifiInfoModel.getCount() + 1);
+                                wifiInfoModel.getRss().add(scanResult.level * 1.0f);
                                 isSame = true;
                                 break;
                             }
@@ -197,6 +220,7 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
                             model.setFrequency(scanResult.frequency);
                             model.setMacAddress(scanResult.BSSID);
                             model.setName(scanResult.SSID);
+                            model.getRss().add(scanResult.level * 1.0f);
                             newList.add(model);
                         }
                     }
@@ -211,8 +235,13 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         }).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    hideProgress();
+                    Log.d(TAG, "getScanWifi size: " + response.size());
                     mWifiInfoModels.addAll(response);
+                    if (!isResume) {
+                        isNotification = true;
+                        return;
+                    }
+                    hideProgress();
                     mAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
 

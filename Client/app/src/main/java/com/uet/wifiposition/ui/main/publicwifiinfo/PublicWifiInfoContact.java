@@ -5,6 +5,7 @@ import com.uet.wifiposition.remote.model.getbuilding.GetBuildingsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.GetRoomsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
 import com.uet.wifiposition.remote.model.getbuilding.PostReferencePoint;
+import com.uet.wifiposition.remote.requestbody.PostReferencePointGaussRequest;
 import com.uet.wifiposition.ui.base.ViewUI;
 
 import java.util.List;
@@ -25,7 +26,11 @@ public interface PublicWifiInfoContact {
 
         void finishPostRefencePoint(PostReferencePoint response);
 
-        void erorrPostReferencePoint(Throwable error);
+        void errorPostReferencePoint(Throwable error);
+
+        void finishPostReferencePointGauss(PostReferencePoint response);
+
+        void errorPostReferencePointGauss(Throwable error);
     }
 
     interface Presenter extends IBasePresenter {
@@ -34,5 +39,7 @@ public interface PublicWifiInfoContact {
         void getRooms(int buildingId);
 
         void postReferencePoint(int buildingId, int roomId, int x, int y, List<InfoReferencePointInput> infos);
+
+        void postReferencePointGauss(PostReferencePointGaussRequest request);
     }
 }

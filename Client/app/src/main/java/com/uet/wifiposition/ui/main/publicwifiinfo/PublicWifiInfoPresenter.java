@@ -3,6 +3,7 @@ package com.uet.wifiposition.ui.main.publicwifiinfo;
 import com.uet.wifiposition.remote.interact.main.Interactor;
 import com.uet.wifiposition.remote.interact.main.BasePresenter;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
+import com.uet.wifiposition.remote.requestbody.PostReferencePointGaussRequest;
 
 import java.util.List;
 
@@ -49,7 +50,20 @@ class PublicWifiInfoPresenter extends BasePresenter<PublicWifiInfoContact.View> 
                     mView.finishPostRefencePoint(response);
                 }, error -> {
                     mView.hideProgress();
-                    mView.erorrPostReferencePoint(error);
+                    mView.errorPostReferencePoint(error);
+                });
+    }
+
+    @Override
+    public void postReferencePointGauss(PostReferencePointGaussRequest request) {
+        mView.showProgress();
+        subscribeHasDispose(Interactor.getInstance().postReferencePointGauss(request),
+                response -> {
+                    mView.hideProgress();
+                    mView.finishPostReferencePointGauss(response);
+                }, error -> {
+                    mView.hideProgress();
+                    mView.errorPostReferencePointGauss(error);
                 });
     }
 }

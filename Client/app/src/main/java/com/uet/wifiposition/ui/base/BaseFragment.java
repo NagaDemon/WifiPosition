@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
 import com.uet.wifiposition.utils.*;
 
 
@@ -23,6 +24,7 @@ public abstract class BaseFragment extends Fragment implements ViewFragment {
     protected boolean mIsDestroyView = true;
     protected int mAnimationContinueId;
     private View mProgress;
+    protected boolean isResume;
 
     @Nullable
     @Override
@@ -63,14 +65,14 @@ public abstract class BaseFragment extends Fragment implements ViewFragment {
      */
     @Override
     public void showProgress() {
-        if (mProgress != null ) {
+        if (mProgress != null) {
             mProgress.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void hideProgress() {
-        if (mProgress != null ) {
+        if (mProgress != null) {
             mProgress.setVisibility(View.GONE);
         }
     }
@@ -114,6 +116,25 @@ public abstract class BaseFragment extends Fragment implements ViewFragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isHidden()) {
+            isResume = true;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        isResume = false;
+        super.onPause();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        isResume = !hidden;
+    }
 
     public static Fragment openFragment(FragmentManager manager, FragmentTransaction transaction, Class<? extends BaseFragment> clazz, Bundle bundle,
                                         boolean hasAddbackstack, boolean hasCommitTransaction, AnimationSwitchScreen animations,
@@ -229,5 +250,6 @@ public abstract class BaseFragment extends Fragment implements ViewFragment {
 
         return null;
     }
+
 
 }

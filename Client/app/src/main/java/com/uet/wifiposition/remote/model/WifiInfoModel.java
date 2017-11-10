@@ -1,5 +1,8 @@
 package com.uet.wifiposition.remote.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ducnd on 9/22/17.
  */
@@ -11,6 +14,7 @@ public class WifiInfoModel {
     private float frequency;
     private String macAddress;
     private int count;
+    private List<Float> rss;
 
 
     public WifiInfoModel(String name, float level, float frequency, String macAddress, int count) {
@@ -19,9 +23,12 @@ public class WifiInfoModel {
         this.frequency = frequency;
         this.macAddress = macAddress;
         this.count = count;
+        rss = new ArrayList<>();
+        rss.add(level);
     }
 
     public WifiInfoModel() {
+        rss = new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -70,5 +77,13 @@ public class WifiInfoModel {
 
     public void setCheck(boolean check) {
         isCheck = check;
+    }
+
+    public List<Float> getRss() {
+        return rss;
+    }
+
+    public void setRss(List<Float> rss) {
+        this.rss = rss;
     }
 }

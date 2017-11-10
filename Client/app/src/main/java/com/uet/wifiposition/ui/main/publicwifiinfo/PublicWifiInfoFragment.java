@@ -13,6 +13,8 @@ import com.uet.wifiposition.remote.model.getbuilding.GetRoomsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
 import com.uet.wifiposition.remote.model.getbuilding.PostReferencePoint;
 import com.uet.wifiposition.remote.model.getbuilding.RoomModel;
+import com.uet.wifiposition.remote.requestbody.ItemPostReferencePointGaussRequest;
+import com.uet.wifiposition.remote.requestbody.PostReferencePointGaussRequest;
 import com.uet.wifiposition.ui.base.BaseMvpFragment;
 import com.uet.wifiposition.utils.StringUtils;
 
@@ -147,8 +149,8 @@ public class PublicWifiInfoFragment extends BaseMvpFragment<PublicWifiInfoContac
     }
 
     @Override
-    public void erorrPostReferencePoint(Throwable error) {
-
+    public void errorPostReferencePoint(Throwable error) {
+        showMessage(error.getMessage());
     }
 
     @Override
@@ -178,17 +180,40 @@ public class PublicWifiInfoFragment extends BaseMvpFragment<PublicWifiInfoContac
                     showMessage(R.string.Please_choose_wifi_to_upload);
                     return;
                 }
-                List<InfoReferencePointInput> pointInputs = new ArrayList<>();
-                for (WifiInfoModel infoModel : infoModels) {
-                    pointInputs.add(new InfoReferencePointInput(infoModel.getMacAddress(), infoModel.getName(), infoModel.getLevel()));
-                }
-                int buildingId = buildingModels.get((int) spBuilding.getTag()).getBuildingId();
-                int roomId = roomModels.get((int) spRoom.getTag()).getRoomId();
-                mPresenter.postReferencePoint(buildingId, roomId, x, y, pointInputs);
+                upload(x, y, infoModels);
                 break;
             default:
                 break;
         }
+    }
+
+    private void upload(int x, int y, List<WifiInfoModel> infoModels) {
+        List<ItemPostReferencePointGaussRequest> items = new ArrayList<>();
+        for (WifiInfoModel infoModel : infoModels) {
+            ItemPostReferencePointGaussRequest item = new ItemPostReferencePointGaussRequest();
+            item.setAppName(infoModel.getName());
+            item.setMacAddress(infoModel.getMacAddress());
+            item.setListRss(infoModel.getRss());
+
+            items.add(item);
+        }
+
+        PostReferencePointGaussRequest request = new PostReferencePointGaussRequest();
+        request.setItemPostReferencePointGaussRequests(items);
+        int roomId = roomModels.get((int) spRoom.getTag()).getRoomId();
+        request.setRoomId(roomId);
+        request.setX(x);
+        request.setY(y);
+        mPresenter.postReferencePointGauss(request);
+
+
+//        List<InfoReferencePointInput> pointInputs = new ArrayList<>();
+//        for (WifiInfoModel infoModel : infoModels) {
+//            pointInputs.add(new InfoReferencePointInput(infoModel.getMacAddress(), infoModel.getName(), infoModel.getLevel()));
+//        }
+//        int buildingId = buildingModels.get((int) spBuilding.getTag()).getBuildingId();
+//        int roomId = roomModels.get((int) spRoom.getTag()).getRoomId();
+//        mPresenter.postReferencePoint(buildingId, roomId, x, y, pointInputs);
     }
 
     public int getBuildingId() {
@@ -202,10 +227,18 @@ public class PublicWifiInfoFragment extends BaseMvpFragment<PublicWifiInfoContac
         if (roomModels == null || roomModels.size() == 0) {
             return -1;
         }
-      return roomModels.get((int) spRoom.getTag()).getRoomId();
+        return roomModels.get((int) spRoom.getTag()).getRoomId();
     }
 
+    @Override
+    public void finishPostReferencePointGauss(PostReferencePoint response) {
+        showMessage("upload success");
+    }
 
+    @Override
+    public void errorPostReferencePointGauss(Throwable error) {
+        showMessage(error.getMessage());
+    }
 
     public interface IPublicWifiInfo {
         List<WifiInfoModel> getListWifiInfoChoose();
