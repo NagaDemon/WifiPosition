@@ -1,5 +1,6 @@
 package com.uet.wifiposition.remote.interact.interf;
 
+import com.uet.wifiposition.remote.model.getbuilding.ExtendGetLocationModel;
 import com.uet.wifiposition.remote.model.getbuilding.GetBuildingsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.GetRoomsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
@@ -25,5 +26,5 @@ public interface IInteractor {
     Observable<PostReferencePoint> postReferencePoint(int buildingId, int roomId, int x, int y, List<InfoReferencePointInput> infos);
     Observable<PostReferencePoint> postReferencePointGauss(PostReferencePointGaussRequest postReferencePointGaussRequest);
 
-    Observable<GetLocationResponse> getLocation(int buildingId, int roomId, List<InfoReferencePointInput> infoReferencePointInputs);
+    Observable<GetLocationResponse> getLocation(int buildingId, int roomId, List<InfoReferencePointInput> infoReferencePointInputs, ExtendGetLocationModel firstGetLocationModel);
 }

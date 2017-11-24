@@ -1,11 +1,12 @@
-package com.uet.wifiposition.ui.main;
+package com.uet.wifiposition.ui.main.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.uet.wifiposition.ui.main.publicwifiinfo.PublicWifiInfoFragment;
-import com.uet.wifiposition.ui.main.scanwifi.ScanWifiInfoFragment;
+import com.uet.wifiposition.ui.main.home.publicwifiinfo.PublicWifiInfoFragment;
+import com.uet.wifiposition.ui.main.home.scanwifi.ScanWifiInfoFragment;
+import com.uet.wifiposition.ui.main.home.tracking.TrackingFragment;
 
 /**
  * Created by ducnd on 9/22/17.
@@ -24,6 +25,9 @@ public class ScanAndUpdateAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        if (position == 2) {
+            return new TrackingFragment();
+        }
         if (position == 0) {
             return fragment1;
         } else {
@@ -33,7 +37,7 @@ public class ScanAndUpdateAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -41,7 +45,12 @@ public class ScanAndUpdateAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return "Wifi info";
         } else {
-            return "Update database";
+            if (position == 1) {
+                return "Update database";
+            } else {
+                return "Tracking";
+            }
+
         }
     }
 }

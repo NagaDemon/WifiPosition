@@ -1,6 +1,7 @@
-package com.uet.wifiposition.ui.main;
+package com.uet.wifiposition.ui.main.home;
 
 import com.uet.wifiposition.remote.interact.interf.IBasePresenter;
+import com.uet.wifiposition.remote.model.getbuilding.ExtendGetLocationModel;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
 import com.uet.wifiposition.remote.model.getposition.GetLocationResponse;
 import com.uet.wifiposition.ui.base.ViewUI;
@@ -19,6 +20,6 @@ public interface ScanAndUpdateContract {
     }
 
     interface Presenter extends IBasePresenter {
-        void getLocation(int buildingId, int roomId, List<InfoReferencePointInput> infoReferencePointInputs);
+        void getLocation(int buildingId, int roomId, List<InfoReferencePointInput> infoReferencePointInputs, ExtendGetLocationModel firstGetLocationModel);
     }
 }

@@ -1,5 +1,6 @@
 package com.uet.wifiposition.remote.requestbody;
 
+import com.uet.wifiposition.remote.model.getbuilding.ExtendGetLocationModel;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class GetLocationRequest {
     private int buildingId;
     private int roomId;
     private List<InfoReferencePointInput> infos;
+    private ExtendGetLocationModel extendGetLocationModel;
 
     public int getBuildingId() {
         return buildingId;
@@ -35,5 +37,13 @@ public class GetLocationRequest {
 
     public void setInfos(List<InfoReferencePointInput> infos) {
         this.infos = infos;
+    }
+
+    public ExtendGetLocationModel getExtendGetLocationModel() {
+        return extendGetLocationModel;
+    }
+
+    public void setExtendGetLocationModel(ExtendGetLocationModel extendGetLocationModel) {
+        this.extendGetLocationModel = extendGetLocationModel;
     }
 }

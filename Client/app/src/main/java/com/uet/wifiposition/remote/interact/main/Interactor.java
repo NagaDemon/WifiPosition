@@ -1,12 +1,12 @@
 package com.uet.wifiposition.remote.interact.main;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
 import com.uet.wifiposition.common.Constants;
 import com.uet.wifiposition.remote.interact.resource.Rest;
 import com.uet.wifiposition.remote.interact.interf.IInteractor;
+import com.uet.wifiposition.remote.model.getbuilding.ExtendGetLocationModel;
 import com.uet.wifiposition.remote.model.getbuilding.GetBuildingsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.GetRoomsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
@@ -126,11 +126,15 @@ public class Interactor implements IInteractor {
     }
 
     @Override
-    public Observable<GetLocationResponse> getLocation(int buildingId, int roomId, List<InfoReferencePointInput> infoReferencePointInputs) {
+    public Observable<GetLocationResponse> getLocation(int buildingId, int roomId, List<InfoReferencePointInput> infoReferencePointInputs, ExtendGetLocationModel firstGetLocationModel) {
         GetLocationRequest requestBody = new GetLocationRequest();
         requestBody.setBuildingId(buildingId);
         requestBody.setRoomId(roomId);
         requestBody.setInfos(infoReferencePointInputs);
+        requestBody.setInfos(infoReferencePointInputs);
+        requestBody.setExtendGetLocationModel(firstGetLocationModel);
+        String text = goGson.toJson(requestBody);
+        System.out.println("text: " + text);
         RequestBody requestBodyD = RequestBody.create(MediaType.parse("application/json"), goGson.toJson(requestBody));
         return mRes.getLocation(requestBodyD)
                 .subscribeOn(mScheduel)

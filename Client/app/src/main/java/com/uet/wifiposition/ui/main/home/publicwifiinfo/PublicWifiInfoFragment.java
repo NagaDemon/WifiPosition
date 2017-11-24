@@ -1,4 +1,4 @@
-package com.uet.wifiposition.ui.main.publicwifiinfo;
+package com.uet.wifiposition.ui.main.home.publicwifiinfo;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +10,6 @@ import com.uet.wifiposition.remote.model.WifiInfoModel;
 import com.uet.wifiposition.remote.model.getbuilding.BuildingModel;
 import com.uet.wifiposition.remote.model.getbuilding.GetBuildingsResponse;
 import com.uet.wifiposition.remote.model.getbuilding.GetRoomsResponse;
-import com.uet.wifiposition.remote.model.getbuilding.InfoReferencePointInput;
 import com.uet.wifiposition.remote.model.getbuilding.PostReferencePoint;
 import com.uet.wifiposition.remote.model.getbuilding.RoomModel;
 import com.uet.wifiposition.remote.requestbody.ItemPostReferencePointGaussRequest;

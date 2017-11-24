@@ -1,4 +1,4 @@
-package com.uet.wifiposition.ui.main.scanwifi;
+package com.uet.wifiposition.ui.main.home.scanwifi;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,24 +6,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.uet.wifiposition.R;
 import com.uet.wifiposition.remote.model.WifiInfoModel;
 import com.uet.wifiposition.ui.base.BaseFragment;
-import com.uet.wifiposition.ui.main.publicwifiinfo.PublicWifiInfoFragment;
+import com.uet.wifiposition.ui.main.home.publicwifiinfo.PublicWifiInfoFragment;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -67,13 +60,6 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
         rcWifi.setAdapter(mAdapter);
         initBroadcast();
 
-        wifiManager.setWifiEnabled(true);
-        mDisposeScan = Observable.just("scan")
-                .repeatWhen(delay -> delay.delay(500, TimeUnit.MILLISECONDS))
-                .subscribe(response -> {
-                    wifiManager.startScan();
-                });
-
     }
 
     @Override
@@ -105,6 +91,28 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
                 isNotification = false;
             }
         }
+
+        wifiManager.setWifiEnabled(true);
+        mDisposeScan = Observable.just("scan")
+                .repeatWhen(delay -> delay.delay(2000, TimeUnit.MILLISECONDS))
+                .subscribe(response -> {
+                    boolean isScan = wifiManager.startScan();
+//                    Log.d(TAG, "initComponents: isScan: " + isScan);
+//                    if ( isScan  ) {
+//                        List<ScanResult> scanResults = wifiManager.getScanResults();
+//                        for (ScanResult scanResult : scanResults) {
+//                            Log.d(TAG, "initComponents: name: " + scanResult.SSID + "level: " + scanResult.level);
+//                        }
+//                    }
+//                    Log.d(TAG, "initComponents: ---------------------------------");
+                });
+    }
+
+    @Override
+    public void onPause() {
+        mDisposeScan.dispose();
+        wifiManager.setWifiEnabled(false);
+        super.onPause();
     }
 
     @Override
@@ -117,14 +125,6 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
                 isNotification = false;
             }
         }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        mDisposeScan.dispose();
-        wifiManager.setWifiEnabled(false);
-        super.onDestroy();
     }
 
     @Override
@@ -224,7 +224,6 @@ public class ScanWifiInfoFragment extends BaseFragment implements ScanWifiInfoAd
                             newList.add(model);
                         }
                     }
-
                 }
                 isClear = false;
                 emitter.onNext(newList);

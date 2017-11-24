@@ -1,4 +1,4 @@
-package com.uet.wifiposition.ui.main.scanwifi;
+package com.uet.wifiposition.ui.main.home.scanwifi;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.uet.wifiposition.ui.main.publicwifiinfo;
+package com.uet.wifiposition.ui.main.home.publicwifiinfo;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +56,7 @@ public class PublicWifiInfoAdapter extends BaseAdapter {
         }
     }
 
-    interface IPublicWifiInfoAdapter {
+    public interface IPublicWifiInfoAdapter {
         int getCount();
 
         String getName(int position);

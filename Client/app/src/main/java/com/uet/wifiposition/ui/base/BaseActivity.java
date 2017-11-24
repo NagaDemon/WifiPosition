@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         boolean isHideStatusBar = false;
 
         mIsDestroyView = false;

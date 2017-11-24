@@ -1,4 +1,4 @@
-package com.uet.wifiposition.ui.main.publicwifiinfo;
+package com.uet.wifiposition.ui.main.home.publicwifiinfo;
 
 import com.uet.wifiposition.remote.interact.interf.IBasePresenter;
 import com.uet.wifiposition.remote.model.getbuilding.GetBuildingsResponse;
