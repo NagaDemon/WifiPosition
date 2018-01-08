@@ -85,47 +85,6 @@ public class TrackingView extends View {
 
     private void initTrackingReal() {
         locationReals = new ArrayList<>();
-        locationReals.add(new LocationModel(10, 7));
-        locationReals.add(new LocationModel(8, 7));
-        locationReals.add(new LocationModel(6, 7));
-        locationReals.add(new LocationModel(6, 5));
-        locationReals.add(new LocationModel(6, 3));
-        locationReals.add(new LocationModel(8, 3));
-        locationReals.add(new LocationModel(6, 3));
-        locationReals.add(new LocationModel(4, 3));
-        locationReals.add(new LocationModel(2, 3));
-        locationReals.add(new LocationModel(0, 3));
-        locationReals.add(new LocationModel(-2, 4));
-        locationReals.add(new LocationModel(-4, 4));
-        locationReals.add(new LocationModel(-5, 5));
-        locationReals.add(new LocationModel(-5, 7));
-        locationReals.add(new LocationModel(-5, 9));
-        locationReals.add(new LocationModel(-5, 11));
-        locationReals.add(new LocationModel(-5, 13));
-        locationReals.add(new LocationModel(-5, 15));
-        locationReals.add(new LocationModel(-5, 17));
-
-
-        locationModels = new ArrayList<>();
-        locationModels.add(new LocationModel(10, 7));
-        locationModels.add(new LocationModel(7f, 5f));
-        locationModels.add(new LocationModel(8f, 4f));
-        locationModels.add(new LocationModel(7f, 4f));
-        locationModels.add(new LocationModel(7f, 3f));
-        locationModels.add(new LocationModel(7f, 3f));
-        locationModels.add(new LocationModel(6f, 6f));
-        locationModels.add(new LocationModel(5f, 2f));
-        locationModels.add(new LocationModel(2f, 3f));
-        locationModels.add(new LocationModel(5f, 7f));
-        locationModels.add(new LocationModel(-4f, 5f));
-        locationModels.add(new LocationModel(-5f, 5f));
-        locationModels.add(new LocationModel(-3f, 3f));
-        locationModels.add(new LocationModel(-5f, 8f));
-        locationModels.add(new LocationModel(-6f, 10f));
-        locationModels.add(new LocationModel(-5f, 6f));
-        locationModels.add(new LocationModel(-5f, 13f));
-        locationModels.add(new LocationModel(-5, 15f));
-        locationModels.add(new LocationModel(-5, 13f));
 
     }
 
