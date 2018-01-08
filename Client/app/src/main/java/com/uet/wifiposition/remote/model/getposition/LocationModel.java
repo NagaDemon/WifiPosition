@@ -5,23 +5,31 @@ package com.uet.wifiposition.remote.model.getposition;
  */
 
 public class LocationModel {
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private int transactionId;
 
-    public int getX() {
+    public LocationModel(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public LocationModel() {
+    }
+
+    public float getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 

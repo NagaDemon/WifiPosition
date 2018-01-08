@@ -119,8 +119,8 @@ public class ScanAndUpdateFragment extends BaseMvpFragment<ScanAndUpdateContract
                 if (tracking.isPathEmpty()) {
                     ExtendGetLocationModel model = new ExtendGetLocationModel();
                     model.setFirst(true);
-                    model.setX(8);
-                    model.setY(3);
+                    model.setX(10);
+                    model.setY(7);
                     mPresenter.getLocation(buildingId, roomId, infoReferencePointInputs, model);
                 } else {
                     ExtendGetLocationModel model = new ExtendGetLocationModel();

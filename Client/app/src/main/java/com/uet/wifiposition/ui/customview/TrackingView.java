@@ -29,8 +29,11 @@ public class TrackingView extends View {
     private Paint pTracking;
     private Path pathTracking;
     private Paint pPoint;
+    private Paint pPointReal;
+    private Paint pText;
     private boolean isStart;
     private List<LocationModel> locationModels;
+    private List<LocationModel> locationReals;
 
     public TrackingView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -67,6 +70,63 @@ public class TrackingView extends View {
         pPoint = new Paint();
         pPoint.setAntiAlias(true);
         pPoint.setColor(Color.GREEN);
+
+        pPointReal = new Paint();
+        pPointReal.setAntiAlias(true);
+        pPointReal.setColor(Color.BLACK);
+
+        pText = new Paint();
+        pText.setTextSize(20);
+        pText.setAntiAlias(true);
+        pText.setColor(Color.parseColor("#E91E63"));
+
+        initTrackingReal();
+    }
+
+    private void initTrackingReal() {
+        locationReals = new ArrayList<>();
+        locationReals.add(new LocationModel(10, 7));
+        locationReals.add(new LocationModel(8, 7));
+        locationReals.add(new LocationModel(6, 7));
+        locationReals.add(new LocationModel(6, 5));
+        locationReals.add(new LocationModel(6, 3));
+        locationReals.add(new LocationModel(8, 3));
+        locationReals.add(new LocationModel(6, 3));
+        locationReals.add(new LocationModel(4, 3));
+        locationReals.add(new LocationModel(2, 3));
+        locationReals.add(new LocationModel(0, 3));
+        locationReals.add(new LocationModel(-2, 4));
+        locationReals.add(new LocationModel(-4, 4));
+        locationReals.add(new LocationModel(-5, 5));
+        locationReals.add(new LocationModel(-5, 7));
+        locationReals.add(new LocationModel(-5, 9));
+        locationReals.add(new LocationModel(-5, 11));
+        locationReals.add(new LocationModel(-5, 13));
+        locationReals.add(new LocationModel(-5, 15));
+        locationReals.add(new LocationModel(-5, 17));
+
+
+        locationModels = new ArrayList<>();
+        locationModels.add(new LocationModel(10, 7));
+        locationModels.add(new LocationModel(7f, 5f));
+        locationModels.add(new LocationModel(8f, 4f));
+        locationModels.add(new LocationModel(7f, 4f));
+        locationModels.add(new LocationModel(7f, 3f));
+        locationModels.add(new LocationModel(7f, 3f));
+        locationModels.add(new LocationModel(6f, 6f));
+        locationModels.add(new LocationModel(5f, 2f));
+        locationModels.add(new LocationModel(2f, 3f));
+        locationModels.add(new LocationModel(5f, 7f));
+        locationModels.add(new LocationModel(-4f, 5f));
+        locationModels.add(new LocationModel(-5f, 5f));
+        locationModels.add(new LocationModel(-3f, 3f));
+        locationModels.add(new LocationModel(-5f, 8f));
+        locationModels.add(new LocationModel(-6f, 10f));
+        locationModels.add(new LocationModel(-5f, 6f));
+        locationModels.add(new LocationModel(-5f, 13f));
+        locationModels.add(new LocationModel(-5, 15f));
+        locationModels.add(new LocationModel(-5, 13f));
+
     }
 
     @Override
@@ -75,9 +135,12 @@ public class TrackingView extends View {
         if (sizeCell == 0) {
             sizeCell = w / 19;
             pathRoot = new Path();
-            pathRoot.moveTo(sizeCell * 8, sizeCell * 3);
-            pathRoot.lineTo(sizeCell * 1, sizeCell * 3);
-            pathRoot.lineTo(sizeCell * 1, sizeCell * 4);
+            pathRoot.moveTo(sizeCell * 10, sizeCell * 7);
+            pathRoot.lineTo(sizeCell * 6, sizeCell * 7);
+            pathRoot.lineTo(sizeCell * 6, sizeCell * 3);
+            pathRoot.lineTo(sizeCell * 8, sizeCell * 3);
+            pathRoot.lineTo(sizeCell * 0, sizeCell * 3);
+            pathRoot.lineTo(sizeCell * 0, sizeCell * 4);
             pathRoot.lineTo(sizeCell * -5, sizeCell * 4);
             pathRoot.lineTo(sizeCell * -5, sizeCell * 17);
 
@@ -100,12 +163,17 @@ public class TrackingView extends View {
                 pathCel.addPath(path);
             }
 
+            pathTracking.moveTo(10 * sizeCell, 7 * sizeCell);
+            for (int i = 1; i < locationModels.size(); i++) {
+                pathTracking.lineTo(locationModels.get(i).getX() * sizeCell, locationModels.get(i).getY() * sizeCell);
+            }
+
 
             invalidate();
         }
     }
 
-    public void addPath(int x, int y) {
+    public void addPath(float x, float y) {
         if (!isStart) {
             isStart = true;
             pathTracking.moveTo(x * sizeCell, y * sizeCell);
@@ -130,8 +198,10 @@ public class TrackingView extends View {
             canvas.drawPath(pathRoot, pRoot);
         }
 
+        int increase = 0;
         if (locationModels.size() > 0) {
             canvas.drawPath(pathTracking, pTracking);
+            int index = 0;
             for (LocationModel locationModel : locationModels) {
                 canvas.drawCircle(
                         locationModel.getX() * sizeCell,
@@ -139,12 +209,33 @@ public class TrackingView extends View {
                         10,
                         pPoint
                 );
+                canvas.drawText((index+increase) + "", locationModel.getX() * sizeCell, locationModel.getY() * sizeCell, pText);
+                if ( index == 11 ) {
+                    increase = 2;
+                }
+                index++;
             }
+        }
+        int index = 0;
+        for (LocationModel locationReal : locationReals) {
+            canvas.drawCircle(
+                    locationReal.getX() * sizeCell,
+                    locationReal.getY() * sizeCell,
+                    10,
+                    pPointReal
+            );
+
+            if (index == 12 || index == 13) {
+                canvas.drawText("Miss", locationReal.getX() * sizeCell, locationReal.getY() * sizeCell, pText);
+            } else {
+                canvas.drawText(index+ "", locationReal.getX() * sizeCell, locationReal.getY() * sizeCell, pText);
+            }
+            index++;
         }
         canvas.restore();
     }
 
     public boolean isPathEmpty() {
-        return locationModels.size()==0;
+        return locationModels.size() == 0;
     }
 }
